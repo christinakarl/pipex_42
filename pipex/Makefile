@@ -6,11 +6,11 @@
 #    By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/16 17:38:19 by ckarl             #+#    #+#              #
-#    Updated: 2023/06/16 18:26:25 by ckarl            ###   ########.fr        #
+#    Updated: 2023/06/19 17:20:41 by ckarl            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS			= main.c
+SRCS			= main.c ft_split.c ft_putstr_fd.c
 
 OBJS			= ${SRCS:.c=.o}
 
@@ -40,7 +40,7 @@ all:			${NAME}
 
 ${NAME}:		${OBJS}
 				cd ft_printf; make
-				${CC} ${CFLAGS} -o $@ ${OBJS} -Lft_printf - lftprintf -Ift_printf
+				${CC} ${CFLAGS} -o $@ ${OBJS} -Lft_printf -lftprintf -Ift_printf
 				@echo "$(COLOUR_GREEN)( ಠ ͜ʖ ಠ )$(COLOUR_END)"
 
 clean:
