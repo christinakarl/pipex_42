@@ -12,12 +12,6 @@
 
 #include "pipex.h"
 
-//check access rights for cmd1 and cmd2
-// int	check_access(char *input, char *output)
-// {
-// 	if (access())
-// }
-
 //print error text & return to main
 int	error(char *str)
 {
@@ -25,18 +19,61 @@ int	error(char *str)
 	return (-1);
 }
 
-//child process: dup2 stdin & stdout, close reading end[0] which will be used by parent, execve (envp[2])
+//get entire text line following "PATH=" from envp
+char	*get_PATH_line(char **envp)
+{
+	char	*envp_PATH;
+
+	// envp_PATH = NULL;
+	while (*envp)
+	{
+		if (ft_strncmp(*envp, "PATH", 4) == 0)
+			envp_PATH = *envp;
+		envp++;
+	}
+	return (envp_PATH + 5);
+}
+
+//find the right path for a specific command in order to pass it to envp in child/parent, using access check function
+char	*get_right_path(char *cmd, char **envp)
+{
+	char	**all_paths;
+	char	*temp_path;
+
+	all_paths = ft_split(get_PATH_line(envp), ':');
+	while (*all_paths)
+	{
+		temp_path = ft_join_path(*all_paths, cmd);
+		if (access(temp_path, 0) == 0)
+			return (temp_path);
+		free(temp_path);
+		all_paths++;
+	}
+	return (NULL);
+}
+
+//child process: dup2 stdin & stdout, close reading end[0] which will be used by parent, execve
 void	child_process(int in, char **argv, int end[2], char **envp)
 {
 	char	**cmd1;
+	char	*cmd1_path;
 
 	cmd1 = ft_split(argv[2], ' ');
-	dup2(in, STDIN_FILENO);
-	dup2(end[1], STDOUT_FILENO);
+	cmd1_path = get_right_path(argv[2], envp);
+	ft_printf("%s\n", cmd1_path);
+	if (!cmd1_path)
+		return (perror("Enter valid command 1"));
+	if (dup2(in, STDIN_FILENO) < 0)
+		return (perror("Dup2 stdin (child)"));
+	if (dup2(end[1], STDOUT_FILENO) < 0)
+		return (perror("Dup2 stdout (child)"));
 	close(in);
 	close(end[0]);
 
-	//execve: check if commands exist first
+	if (execve(cmd1_path, cmd1, envp) < 0)
+		return (perror("Execve (child)"));
+	free(cmd1);
+	free(cmd1_path);
 
 }
 
@@ -44,16 +81,26 @@ void	child_process(int in, char **argv, int end[2], char **envp)
 void	parent_process(int out, char **argv, int end[2], char **envp)
 {
 	char	**cmd2;
+	char	*cmd2_path;
 	int		status;
 
-	cmd2 = ft_split(argv[4], ' ');
 	waitpid(0, &status, 0);
-	dup2(end[0], STDIN_FILENO);
-	dup2(out, STDOUT_FILENO);
+	cmd2 = ft_split(argv[4], ' ');
+	cmd2_path = get_right_path(argv[3], envp);
+	if (!cmd2_path)
+		return (perror("Enter valid command 2"));
+
+	if (dup2(end[0], STDIN_FILENO) < 0)
+		return (perror("Dup2 stdin (parent)"));
+	if (dup2(out, STDOUT_FILENO) < 0)
+		return (perror("Dup2 stdout (parent)"));
 	close(out);
 	close(end[1]);
 
-	//execve: check if commands exist first, then cut the PATH= part, then ft_split(envp, ':') >>maybe better to do this in the main
+	if (execve(cmd2_path, cmd2, envp) < 0)
+		return (perror("Execve (parent)"));
+	free(cmd2);
+	free(cmd2_path);
 }
 
 //pipex function creating pipe, fork, child, parent
@@ -68,11 +115,9 @@ void	pipex(int in, int out, char **argv, char **envp)
 	if (process < 0)
 		return (perror("Fork"));
 	if (process == 0)
-		child_process(in, argv, end);
+		child_process(in, argv, end, envp);
 	else
-		parent_process(out, argv, end);
-
-
+		parent_process(out, argv, end, envp);
 }
 
 //envp = environmental path, all possible paths for shell commands
@@ -94,6 +139,7 @@ int main(int argc, char **argv, char **envp)
 	if (out < 0)
 		return (error(ERR_OUTPUT));
 
+	pipex(in, out, argv, envp);
 	// i = 0;
 	// while (*envp[i])
 	// {

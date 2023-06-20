@@ -27,9 +27,14 @@
 
 int		error(char *str);
 void	ft_putstr_fd(char *s, int fd);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	**ft_split(char const *s, char c);
 void	pipex(int inputfile, int outputfile, char **argv, char **envp);
 void	parent_process(int out, char **argv, int end[2], char **envp);
 void	child_process(int in, char **argv, int end[2], char **envp);
+char	*get_PATH_line(char **envp);
+char	*get_right_path(char *cmd, char **evnp);
+char	*ft_join_path(char const *s1, char const *s2);
+size_t	ft_strlen(const char *str);
 
 #endif

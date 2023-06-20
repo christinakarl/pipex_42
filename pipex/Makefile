@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS			= main.c ft_split.c ft_putstr_fd.c
+SRCS			= main.c ft_split.c ft_putstr_fd.c utils.c
 
 OBJS			= ${SRCS:.c=.o}
 
