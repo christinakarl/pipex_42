@@ -6,22 +6,13 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 13:19:20 by ckarl             #+#    #+#             */
-/*   Updated: 2023/06/19 16:20:45 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/06/22 16:23:27 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	ft_len(const char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
-
+//count the nr of words in one string separated by delimitor c
 int	ft_words(char const *s, char c)
 {
 	int	i;
@@ -45,6 +36,7 @@ int	ft_words(char const *s, char c)
 	return (count);
 }
 
+//duplicate a string using start and end points
 char	*ft_dup(char const *str, int start, int end)
 {
 	char	*copy;
@@ -60,10 +52,11 @@ char	*ft_dup(char const *str, int start, int end)
 	return (copy);
 }
 
+//split a string into a char ** using one character as the delimitor
 char	**ft_split(char const *s, char c)
 {
 	char	**tab;
-	int		i;
+	size_t	i;
 	int		a;
 	int		start;
 
@@ -73,11 +66,11 @@ char	**ft_split(char const *s, char c)
 	tab = (char **)malloc(sizeof(char *) * (ft_words(s, c) + 1));
 	if (!tab || !s)
 		return (NULL);
-	while (i <= ft_len(s))
+	while (i <= ft_strlen(s))
 	{
 		if (s[i] != c && start < 0)
 			start = i;
-		else if ((s[i] == c || i == ft_len(s)) && start >= 0)
+		else if ((s[i] == c || i == ft_strlen(s)) && start >= 0)
 		{
 			tab[a++] = ft_dup(s, start, i);
 			start = -1;

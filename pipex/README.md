@@ -10,25 +10,26 @@ cmd1 will be applied to the content of file1 (input 1), while in a next step the
 - ">" is an output redirection: the output of cmd2 will be reedirected to file2 instead of the default stdout
 
 ## Getting started
-- Parse the argv
-- Check if file1 and file2 are accessible (access())
--
-- It is necessary to create a child for each process, they will all be done at the same time while one might wait for a write end to be closed until reading from the same pipe.
+- Parse the argv, check if input & output file exist & rights are given
+- fork(), make parent process wait for child process to finish
+- Check if cmd1 and cmd2 are accessible and split/trim according to their format, handle command errors
+- Execute the command
+
 - The structure will be as follows:
-pipe()
- |
- |-- fork()
-      |
-      |-- child // cmd1
-      :     |--dup2()
-      :     |--close end[0]
-      :     |--execve(cmd1)
-      :
-      |-- parent // cmd2
-            |--dup2()
-            |--close end[1]
-            |--execve(cmd2)
-(source: link 2)
+>pipe()
+>|
+>|-- fork()
+>>>|
+>>>|-- child // cmd1
+>>>>>>>>|--dup2()
+>>>>>>>>|--close end[0]
+>>>>>>>>|--execve(cmd1)
+>>>:
+>>>|-- parent // cmd2
+>>>>>>>>|--dup2()
+>>>>>>>>|--close end[1]
+>>>>>>>>|--execve(cmd2)
+>(source: link 2)
 
 // each cmd needs a stdin (input) and returns an output (to stdout)
     infile                                             outfile
@@ -48,6 +49,7 @@ as stdin for cmd1                                 as stdout for cmd2
 
 -
 ## Difficulties & potential for improvement
+-
 
 ## Useful links
 1. https://42-cursus.gitbook.io/guide/rank-02/pipex

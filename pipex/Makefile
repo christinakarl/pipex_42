@@ -6,11 +6,11 @@
 #    By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/16 17:38:19 by ckarl             #+#    #+#              #
-#    Updated: 2023/06/19 17:20:41 by ckarl            ###   ########.fr        #
+#    Updated: 2023/06/22 16:23:13 by ckarl            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS			= main.c ft_split.c ft_putstr_fd.c utils.c
+SRCS			= main.c ft_split.c utils.c utils_2.c pipex.c
 
 OBJS			= ${SRCS:.c=.o}
 
