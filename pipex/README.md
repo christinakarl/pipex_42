@@ -17,21 +17,6 @@ This project is an introduction to the fork() function which creates two sub-pro
     - Check if cmd1 and cmd2 are accessible and split/trim according to their format, handle command errors
     - Execute the command(s)
 
->pipe()
->|
->|-- fork()
->>>|
->>>|-- child // cmd1
->>>>>>>>|--dup2()
->>>>>>>>|--close end[0]
->>>>>>>>|--execve(cmd1)
->>>:
->>>|-- parent // cmd2
->>>>>>>>|--dup2()
->>>>>>>>|--close end[1]
->>>>>>>>|--execve(cmd2)
->(source: link 2)
-
 ## Difficulties & potential for improvement
 - handled the cases of command given with their specific path (p.e. /bin/ls) and quote mix (p.e. "grep 'char *'")
 - only handling one single pipe, which means max. 2 commands
