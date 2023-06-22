@@ -13,10 +13,10 @@ This project is an introduction to the fork() function which creates two sub-pro
 ## Structure
 - Parse the argv, check if input & output file exist & rights are given
 - fork(), make parent process wait for child process to finish
-- Check if cmd1 and cmd2 are accessible and split/trim according to their format, handle command errors
-- Execute the command
+- In both child & parent:
+    - Check if cmd1 and cmd2 are accessible and split/trim according to their format, handle command errors
+    - Execute the command(s)
 
-### The structure will be as follows:
 >pipe()
 >|
 >|-- fork()
