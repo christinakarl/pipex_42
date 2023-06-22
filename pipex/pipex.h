@@ -6,7 +6,7 @@
 /*   By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:38:29 by ckarl             #+#    #+#             */
-/*   Updated: 2023/06/22 16:23:09 by ckarl            ###   ########.fr       */
+/*   Updated: 2023/06/22 17:55:07 by ckarl            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include "ft_printf/ft_printf.h"
 
 # define ERR_ARG		"Please run the program as follows \
 ./pipex infile cmd1 cmd2 outfile"

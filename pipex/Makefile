@@ -6,7 +6,7 @@
 #    By: ckarl <ckarl@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/16 17:38:19 by ckarl             #+#    #+#              #
-#    Updated: 2023/06/22 16:23:13 by ckarl            ###   ########.fr        #
+#    Updated: 2023/06/22 17:54:59 by ckarl            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,17 +39,14 @@ COLOUR_END		=\033[0m
 all:			${NAME}
 
 ${NAME}:		${OBJS}
-				cd ft_printf; make
-				${CC} ${CFLAGS} -o $@ ${OBJS} -Lft_printf -lftprintf -Ift_printf
+				${CC} ${CFLAGS} -o $@ ${OBJS}
 				@echo "$(COLOUR_GREEN)( ಠ ͜ʖ ಠ )$(COLOUR_END)"
 
 clean:
 				${RM} ${OBJS}
-				cd ft_printf; make clean
 
 fclean:			clean
 				${RM} ${NAME}
-				cd ft_printf; make fclean
 				@echo "$(COLOUR_VIO)All clean!$(COLOUR_END)"
 
 re:				fclean all
